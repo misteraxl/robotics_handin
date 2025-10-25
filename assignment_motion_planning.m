@@ -11,16 +11,13 @@ hold on;
 grid on;
 xlabel('X-axis');
 ylabel('Y-axis');
-title('Theta Angles Over Points');
-legend('theta_1','theta_2')
+
 
 figure(2)
 hold on;
 grid on;
 xlabel('X-axis');
 ylabel('Y-axis');
-title('Theta Angle Velocities Over Points');
-legend('v_theta_1','v_theta_2')
 
 figure(3)
 hold on;
@@ -36,7 +33,7 @@ plot([a_1.*cos(theta_1_last) a_1.*cos(theta_1_last)+(a_2.*cos(theta_1_last+theta
 
 
 colors = ["r"; "g"; "c"; "m"; "y"];
-x_1 = linspace(t0,tf,1000);
+
 theta_1_data = [];
 theta_2_data = [];
 vel_1_data = [];
@@ -83,7 +80,7 @@ for i = 1:size(points,1)
     % End effector position
     tool_pos_x = @(t) (a_1 .* cos(q_theta_1(t)) + a_2 .* cos(q_theta_1(t)+q_theta_2(t)));
     tool_pos_y = @(t) (a_1 .* sin(q_theta_1(t)) + a_2 .* sin(q_theta_1(t)+q_theta_2(t)));
-    angle_dat
+    x_1 = linspace(t0,tf,1000);
     figure(3)
     plot(tool_pos_x(x_1), tool_pos_y(x_1), colors(i))
     plot(x,y, 'o', 'Color',colors(i))
@@ -91,11 +88,19 @@ for i = 1:size(points,1)
     plot([a_1.*cos(theta_1) (a_1.*cos(theta_1)+(a_2.*cos(theta_1+theta_2)))], ...
         [a_1.*sin(theta_1) (a_1.*sin(theta_1)+(a_2.*sin(theta_1+theta_2)))], colors(i))
 
+    theta_1_data = [theta_1_data q_theta_1(x_1)];
+    theta_2_data = [theta_2_data q_theta_2(x_1)];
+    vel_1_data = [vel_1_data v_theta_1(x_1)];
+    vel_2_data = [vel_2_data v_theta_2(x_1)];
 end
-
+x_T = linspace(0,size(points,1).*2,1000.*size(points,1));
 figure(1)
-plot(x_1,q_theta_1(x_1),'Color',"c")
-plot(x_1,q_theta_2(x_1),'Color',"g")
+plot(x_T,theta_1_data,'Color',"c")
+plot(x_T,theta_2_data,'Color',"g")
+title('Theta Angles Over Points');
+legend('theta_1','theta_2')
 figure(2)
-plot(x_1,v_theta_1(x_1),'Color',"c")
-plot(x_1,v_theta_2(x_1),'Color',"g")
+plot(x_T,vel_1_data,'Color',"c")
+plot(x_T,vel_2_data,'Color',"g")
+title('Theta Angle Velocities Over Points');
+legend('v_1','v_2')
