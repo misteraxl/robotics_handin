@@ -1,9 +1,13 @@
 %% INIT
 addpath ~/peter-corke-toolbox/rtb ~/peter-corke-toolbox/common ~/peter-corke-toolbox/smtb
 
-L(1) = Link('d', 0.352, 'a', 0.07, 'alpha', -pi/2, 'm', 50, 'I', [0.3 0.3 0.3]);
-L(2) = Link('d', 0, 'a', 0.36, 'alpha', 0,'m',30, 'I', [0.3 0.3 0.3]);
-L(3) = Link('d', 0, 'a', 0, 'alpha', 0 ,'m',20, 'I', [0.3 0.3 0.3]);
+% L(1) = Link('d', 0.352, 'a', 0.07, 'alpha', -pi/2, 'm', 50, 'I', [0.3 0.3 0.3]);
+% L(2) = Link('d', 0, 'a', 0.36, 'alpha', 0,'m',30, 'I', [0.3 0.3 0.3]);
+% L(3) = Link('d', 0, 'a', 0.38, 'alpha', 0 ,'m',20, 'I', [0.3 0.3 0.3]);
+
+L(1) = Link('d', 0.352, 'a', 0.07, 'alpha', -pi/2, 'm', 50);
+L(2) = Link('d', 0, 'a', 0.36, 'alpha', 0,'m',30);
+L(3) = Link('d', 0, 'a', 0.38, 'alpha', pi/2 ,'m',20);
 
 robot = SerialLink(L,'name','robot');
 
@@ -11,12 +15,13 @@ robot = SerialLink(L,'name','robot');
 
 q = deg2rad([0 20 30]); 
 
-%robot.plot(q)
+robot.plot(deg2rad([0 -90 90]))
 
 grav = [0, 0, -9.81];
 taug = robot.gravload(q, grav);
+disp(taug./100)
 
-disp(robot.inertia(q)./100)
+% disp(robot.inertia(q)./100)
 
 %% Path
 start = deg2rad([20 20 30]);
